@@ -11,6 +11,9 @@
                     >
                     <template v-slot:top>
                         <v-toolbar flat color="white">
+                        <v-btn @click="crearPDF">
+                            <v-icon>mdi-print</v-icon>
+                        </v-btn>
                         <v-toolbar-title>Articulos</v-toolbar-title>
                         <v-divider
                             class="mx-4"
@@ -146,6 +149,8 @@
 </template>
 <script>
     import axios from 'axios'
+    import jsPDF from 'jspdf'
+    import autotable from 'jspdf-autotable'
     export default {
         data(){
             return {
@@ -200,7 +205,27 @@
         },
 
         methods:{
-
+            crearPDF(){
+                var columns = [
+                    {title:'Nombre', dataKey:'nombre'},
+                    {title:'Codigo', dataKey:'codigo'},
+                    {title:'Categoria', dataKey:'categoria'},
+                    {title:'Stock', dataKey:'stock'},
+                    {title:'Precio Venta', dataKey:'precio_venta'}
+                ];
+                var rows = [];
+                this.articulos.map(function(x){
+                    rows.push({nombre:x.nombre,codigo:x.codigo,categoria:x.categoria,stock:x.stock,precio_venta:x.precio_venta});
+                });    
+                var doc = new jsPDF('p','pt');
+                doc.autoTable(columns,rows,{
+                    margin:{top:60},
+                    addPageContent: function(data){
+                        doc.text("Listado de Articulos",40,30);
+                    }
+                });
+                doc.save('Articulos.pdf');
+            },
             listar(){
                 let me = this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};

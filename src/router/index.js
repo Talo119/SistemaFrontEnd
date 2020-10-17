@@ -9,6 +9,8 @@ import Cliente from '../components/Cliente.vue'
 import Proveedor from '../components/Proveedor.vue'
 import Login from '../components/Login.vue'
 import Ingreso from '../components/Ingreso.vue'
+import Venta from '../components/Venta.vue'
+import ConsultaVenta from '../components/ConsultaVenta.vue'
 import store from '../store/index.js'
 
 
@@ -93,6 +95,25 @@ Vue.use(VueRouter)
     meta:{
       administrador: true,
       almacenero: true      
+    }
+  },
+  {
+    path: '/ventas',
+    name: 'Ventas',
+    component: Venta,
+    meta:{
+      administrador: true,
+      vendedor: true      
+    }
+  },
+
+  {
+    path: '/consultaventas',
+    name: 'consultaventas',
+    component: ConsultaVenta,
+    meta:{
+      administrador: true,
+      vendedor: true      
     }
   },
 
